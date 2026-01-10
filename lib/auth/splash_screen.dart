@@ -16,7 +16,6 @@ class SplashScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Placeholder for the Figma Illustration
                   const Icon(
                     Icons.task_alt,
                     size: 100,
@@ -43,7 +42,6 @@ class SplashScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: ElevatedButton(
               onPressed: () {
-                // Check if a user is already logged in
                 final session = Supabase.instance.client.auth.currentSession;
 
                 if (session != null) {

@@ -10,7 +10,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Supabase.instance.client.auth.currentUser;
-    // Find the existing TaskController instance
     final taskController = Get.find<TaskController>();
 
     return Scaffold(
@@ -53,8 +52,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // 2. Dynamic Stats Grid (Ongoing vs Completed)
-            // We use Obx here so the counts update automatically
             Obx(
               () => Row(
                 children: [
@@ -74,7 +71,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // 3. Settings List
             _buildProfileOption(Icons.notifications_none, "Notifications"),
             _buildProfileOption(Icons.security, "Security"),
             _buildProfileOption(Icons.help_outline, "Help & Support"),
@@ -82,7 +78,6 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // 4. Logout Button
             ListTile(
               onTap: () async {
                 await Supabase.instance.client.auth.signOut();
@@ -103,7 +98,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Helper for the Stats Cards
   Widget _buildStatCard(String count, String label, Color color) {
     return Expanded(
       child: Container(
@@ -130,7 +124,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Helper for the Settings Options
   Widget _buildProfileOption(IconData icon, String title) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),

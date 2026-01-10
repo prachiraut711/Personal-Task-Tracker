@@ -6,8 +6,6 @@ import 'task_tile.dart';
 import '../app/theme.dart';
 
 class DashboardScreen extends StatelessWidget {
-  // Use Get.find if the controller is already initialized in main/bindings
-  // or Get.put if this is the first time.
   final controller = Get.put(TaskController());
   final taskTitleController = TextEditingController();
   final taskDescController = TextEditingController();
@@ -17,9 +15,9 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBg,
+      backgroundColor: AppColors.darkBg, 
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.darkBg,
         elevation: 0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,10 +26,14 @@ class DashboardScreen extends StatelessWidget {
               "Welcome Back!",
               style: TextStyle(fontSize: 12, color: AppColors.primaryYellow),
             ),
+            const SizedBox(height: 8),
             Text(
-              Supabase.instance.client.auth.currentUser?.email?.split('@')[0] ??
-                  "User",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Supabase.instance.client.auth.currentUser?.email?.split('@')[0] ?? "User",
+              style: const TextStyle(
+                fontSize: 18, 
+                fontWeight: FontWeight.bold, 
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -43,7 +45,7 @@ class DashboardScreen extends StatelessWidget {
               child: CircleAvatar(
                 radius: 18,
                 backgroundColor: AppColors.primaryYellow,
-                child: Icon(Icons.person, color: Colors.black, size: 20),
+                child: Icon(Icons.person, color: AppColors.darkBg, size: 20),
               ),
             ),
           ),
@@ -54,7 +56,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             const Text(
               "Your Tasks",
               style: TextStyle(
@@ -88,8 +90,7 @@ class DashboardScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: GestureDetector(
-                        onTap: () =>
-                            Get.toNamed('/task-detail', arguments: task),
+                        onTap: () => Get.toNamed('/task-detail', arguments: task),
                         child: TaskTile(
                           title: task.title,
                           onDelete: () => controller.deleteTask(task.id),
@@ -105,34 +106,21 @@ class DashboardScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppColors.inputBg,
+        backgroundColor: AppColors.darkBg, 
         selectedItemColor: AppColors.primaryYellow,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: AppColors.greyText,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         currentIndex: 0,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: "Chat",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: "Add",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: "Calendar",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined),
-            label: "Notifs",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: "Chat"),
+          BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), label: "Calendar"),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_none_outlined), label: "Notifs"),
         ],
         onTap: (index) {
           if (index == 2) {
-            // CHANGE THIS:
             Get.toNamed('/add-task');
           } else if (index == 4) {
             Get.toNamed('/profile');

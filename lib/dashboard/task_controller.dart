@@ -6,12 +6,9 @@ import 'task_model.dart';
 class TaskController extends GetxController {
   final supabase = Supabase.instance.client;
 
-  // Observable list of tasks
   var tasks = <TaskModel>[].obs;
   var isLoading = false.obs;
 
-  // --- Dynamic Getters for Profile Screen Stats ---
-  // These automatically recalculate whenever the 'tasks' list changes
   int get completedCount => tasks.where((t) => t.isCompleted).length;
   int get ongoingCount => tasks.where((t) => !t.isCompleted).length;
 
@@ -33,7 +30,6 @@ class TaskController extends GetxController {
           .eq('user_id', userId)
           .order('created_at', ascending: false);
 
-      // Convert dynamic list from Supabase to TaskModel list
       tasks.value = (data as List).map((e) => TaskModel.fromJson(e)).toList();
     } catch (e) {
       Get.snackbar(
@@ -56,7 +52,6 @@ class TaskController extends GetxController {
         'user_id': supabase.auth.currentUser!.id,
         'is_completed': false,
       });
-      // Refresh the list from the server
       await fetchTasks();
     } catch (e) {
       Get.snackbar(
@@ -83,7 +78,7 @@ class TaskController extends GetxController {
           description: newDesc,
           isCompleted: tasks[index].isCompleted,
         );
-        tasks.refresh(); // Notifies Obx listeners
+        tasks.refresh();
       }
       Get.snackbar('Success', 'Task updated successfully');
     } catch (e) {
@@ -124,12 +119,10 @@ class TaskController extends GetxController {
     }
   }
 
-  // DELETE: Remove task from database and local list
   Future<void> deleteTask(String id) async {
     try {
       await supabase.from('tasks').delete().eq('id', id);
       tasks.removeWhere((t) => t.id == id);
-      // No need to fetch again, just remove from local observable
     } catch (e) {
       Get.snackbar('Delete Failed', e.toString());
     }

@@ -7,7 +7,6 @@ class AddTaskScreen extends StatelessWidget {
   final titleController = TextEditingController();
   final descController = TextEditingController();
 
-  // Using Get.put to ensure the controller exists even if we navigate here directly
   final controller = Get.put(TaskController());
 
   AddTaskScreen({super.key});
@@ -15,24 +14,23 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1E2630), // Dark Background
+      backgroundColor: AppColors.darkBg, 
       appBar: AppBar(
-        title: Center(
-          child: const Text(
+        title: const Center(
+          child: Text(
             "Add New Task",
             style: TextStyle(color: Colors.white),
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // --- FIXED BACK ARROW ---
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             if (Navigator.canPop(context)) {
               Get.back();
             } else {
-              Get.offAllNamed('/dashboard'); // Fallback if history is lost
+              Get.offAllNamed('/dashboard'); 
             }
           },
         ),
@@ -42,7 +40,7 @@ class AddTaskScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Task Title", style: TextStyle(color: Colors.grey)),
+            const Text("Task Title", style: TextStyle(color: AppColors.greyText)),
             const SizedBox(height: 8),
             TextField(
               controller: titleController,
@@ -51,15 +49,17 @@ class AddTaskScreen extends StatelessWidget {
                 hintText: "Enter title",
                 hintStyle: const TextStyle(color: Colors.white38),
                 filled: true,
-                fillColor: const Color(0xFF3D4A54),
+                fillColor: AppColors.inputBg, 
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
-            const Text("Description", style: TextStyle(color: Colors.grey)),
+
+            const Text("Description", style: TextStyle(color: AppColors.greyText)),
             const SizedBox(height: 8),
             TextField(
               controller: descController,
@@ -69,7 +69,7 @@ class AddTaskScreen extends StatelessWidget {
                 hintText: "Enter details",
                 hintStyle: const TextStyle(color: Colors.white38),
                 filled: true,
-                fillColor: const Color(0xFF3D4A54),
+                fillColor: AppColors.inputBg, 
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -78,14 +78,13 @@ class AddTaskScreen extends StatelessWidget {
             ),
             const Spacer(),
 
-            // --- FIXED SAVE BUTTON ---
             Obx(
               () => SizedBox(
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFDD471), // Yellow color
+                    backgroundColor: AppColors.primaryYellow, 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -95,13 +94,11 @@ class AddTaskScreen extends StatelessWidget {
                       : () async {
                           if (titleController.text.trim().isNotEmpty) {
                             try {
-                              // Call the controller method
                               await controller.addTask(
                                 titleController.text.trim(),
                                 descController.text.trim(),
                               );
 
-                              // Success Message
                               Get.snackbar(
                                 "Success",
                                 "Task added successfully!",
@@ -110,11 +107,10 @@ class AddTaskScreen extends StatelessWidget {
                                 colorText: Colors.black,
                                 icon: const Icon(
                                   Icons.check_circle,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               );
 
-                              // Wait a moment for user to see success, then go back
                               await Future.delayed(
                                 const Duration(milliseconds: 800),
                               );
@@ -143,7 +139,7 @@ class AddTaskScreen extends StatelessWidget {
                           "Save Task",
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),

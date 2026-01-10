@@ -6,9 +6,7 @@ class AuthController extends GetxController {
   final AuthService _authService = AuthService();
   var isLoading = false.obs;
 
-  // Change 'void' to 'Future<bool>'
   Future<bool> login(String email, String password) async {
-    // 1. Check for empty fields FIRST
     if (email.isEmpty || password.isEmpty) {
       Get.snackbar(
         "Required",
@@ -25,7 +23,6 @@ class AuthController extends GetxController {
       await _authService.login(email, password);
       return true;
     } catch (e) {
-      // 2. Translate code messages into human text
       String errorMessage = "An error occurred. Please try again.";
 
       if (e.toString().contains('invalid-credential') ||
@@ -37,12 +34,11 @@ class AuthController extends GetxController {
         errorMessage = "No account found with this email.";
       }
 
-      // 3. Show the clean snackbar for errors
       Get.snackbar(
         'Login Failed',
         errorMessage,
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.white, // White background as requested
+        backgroundColor: Colors.white,
         colorText: Colors.black,
         icon: const Icon(Icons.error_outline, color: Colors.red),
         margin: const EdgeInsets.all(15),
@@ -55,13 +51,11 @@ class AuthController extends GetxController {
   }
 
   Future<bool> signup(String email, String password) async {
-    // 1. Check for empty fields
     if (email.isEmpty || password.isEmpty) {
       _showErrorSnackbar("Required", "Please fill in all fields");
       return false;
     }
 
-    // 2. Email Format Validation (Regex)
     bool isEmailValid = RegExp(
       r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
     ).hasMatch(email);
@@ -73,7 +67,6 @@ class AuthController extends GetxController {
       return false;
     }
 
-    // 3. Password Length Validation
     if (password.length < 6) {
       _showErrorSnackbar(
         "Weak Password",

@@ -1,8 +1,7 @@
-// lib/dashboard/task_model.dart
 class TaskModel {
   final String id;
   final String title;
-  final String description; // Added
+  final String description;
   final bool isCompleted;
 
   TaskModel({
@@ -16,7 +15,7 @@ class TaskModel {
     return TaskModel(
       id: json['id'].toString(),
       title: json['title'] ?? '',
-      description: json['description'] ?? '', // Added
+      description: json['description'] ?? '', 
       isCompleted: json['is_completed'] ?? false,
     );
   }

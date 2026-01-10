@@ -7,13 +7,12 @@ import 'task_controller.dart';
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({super.key});
 
-  // Method to show Edit Dialog for Title and Description
   void _showEditDialog(TaskModel task, TaskController controller) {
     final titleEdit = TextEditingController(text: task.title);
     final descEdit = TextEditingController(text: task.description);
 
     Get.defaultDialog(
-      backgroundColor: AppColors.darkBg, // Using the dark background
+      backgroundColor: AppColors.darkBg, 
       title: "Edit Task",
       titleStyle: const TextStyle(
         color: Colors.white,
@@ -21,7 +20,6 @@ class TaskDetailScreen extends StatelessWidget {
       ),
       content: Column(
         children: [
-          // --- TITLE TEXTFIELD ---
           TextField(
             controller: titleEdit,
             style: const TextStyle(color: Colors.white),
@@ -29,16 +27,16 @@ class TaskDetailScreen extends StatelessWidget {
               hintText: "Title",
               hintStyle: const TextStyle(color: Colors.white38),
               filled: true,
-              fillColor: AppColors.inputBg, // Darker box color
+              fillColor: AppColors.inputBg, 
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
             ),
           ),
+
           const SizedBox(height: 15),
 
-          // --- DESCRIPTION TEXTFIELD ---
           TextField(
             controller: descEdit,
             style: const TextStyle(color: Colors.white),
@@ -47,7 +45,7 @@ class TaskDetailScreen extends StatelessWidget {
               hintText: "Description",
               hintStyle: const TextStyle(color: Colors.white38),
               filled: true,
-              fillColor: AppColors.inputBg, // Darker box color
+              fillColor: AppColors.inputBg, 
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -58,10 +56,10 @@ class TaskDetailScreen extends StatelessWidget {
       ),
       textConfirm: "Update",
       confirmTextColor: Colors.black,
-      buttonColor: AppColors.primaryYellow,
+      buttonColor: AppColors.primaryYellow, 
       onConfirm: () {
         controller.updateTask(task.id, titleEdit.text, descEdit.text);
-        Get.back(); // Closes the dialog
+        Get.back();
       },
       textCancel: "Cancel",
       cancelTextColor: Colors.white,
@@ -70,7 +68,6 @@ class TaskDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the initial task data passed from the dashboard
     final TaskModel initialTask = Get.arguments;
     final TaskController controller = Get.find<TaskController>();
 
@@ -86,7 +83,8 @@ class TaskDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: Center(child: const Text("Task Details")),
+        title: const Text("Task Details", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.edit, color: AppColors.primaryYellow),
@@ -97,46 +95,48 @@ class TaskDetailScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Obx(() {
-          // Find the task in the controller's observable list to keep UI in sync
           final task = controller.tasks.firstWhere(
             (t) => t.id == initialTask.id,
             orElse: () => initialTask,
           );
 
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch, 
             children: [
-              // Status Badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: task.isCompleted
-                      ? Colors.green.withOpacity(0.2)
-                      : AppColors.primaryYellow.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  task.isCompleted ? "Completed" : "Ongoing",
-                  style: TextStyle(
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
                     color: task.isCompleted
-                        ? Colors.greenAccent
-                        : AppColors.primaryYellow,
-                    fontWeight: FontWeight.bold,
+                        ? Colors.green.withOpacity(0.2)
+                        : AppColors.primaryYellow.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    task.isCompleted ? "Completed" : "Ongoing",
+                    style: TextStyle(
+                      color: task.isCompleted
+                          ? const Color(0xFF76F2B1) 
+                          : AppColors.primaryYellow,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
+
               const SizedBox(height: 20),
 
               const Text(
                 "Task Title",
                 style: TextStyle(color: AppColors.greyText, fontSize: 14),
               ),
+
               const SizedBox(height: 8),
+
               TextField(
                 controller: titleController,
+                readOnly: true,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -161,6 +161,7 @@ class TaskDetailScreen extends StatelessWidget {
               const SizedBox(height: 8),
               TextField(
                 controller: descController,
+                readOnly: true,
                 maxLines: 5,
                 style: const TextStyle(color: Colors.white70, fontSize: 16),
                 decoration: InputDecoration(
@@ -175,24 +176,27 @@ class TaskDetailScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Status Toggle Button
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: task.isCompleted
-                      ? AppColors.inputBg
-                      : AppColors.primaryYellow,
-                  foregroundColor: task.isCompleted
-                      ? Colors.white
-                      : Colors.black,
-                  side: task.isCompleted
-                      ? const BorderSide(color: Colors.white24)
-                      : BorderSide.none,
-                ),
-                onPressed: () =>
-                    controller.toggleTaskStatus(task.id, task.isCompleted),
-                child: Text(
-                  task.isCompleted ? "Set as Ongoing" : "Mark as Completed",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 55,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: task.isCompleted
+                        ? AppColors.inputBg
+                        : AppColors.primaryYellow,
+                    foregroundColor: task.isCompleted
+                        ? Colors.white
+                        : Colors.black,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    side: task.isCompleted
+                        ? const BorderSide(color: Colors.white24)
+                        : BorderSide.none,
+                  ),
+                  onPressed: () =>
+                      controller.toggleTaskStatus(task.id, task.isCompleted),
+                  child: Text(
+                    task.isCompleted ? "Set as Ongoing" : "Mark as Completed",
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),

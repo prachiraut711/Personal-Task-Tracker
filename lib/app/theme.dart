@@ -1,28 +1,49 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const darkBg = Color(0xFF1E1E1E);
+  // The background is a dark slate blue, not pure dark grey
+  static const darkBg = Color(0xFF212832); 
+  
+  // The primary yellow matches your original choice
   static const primaryYellow = Color(0xFFFED36A);
-  static const inputBg = Color(0xFF262626);
+  
+  // The input fields are lighter than the background in this design
+  static const inputBg = Color(0xFF455A64); 
+  
+  // Standard grey for hint text and secondary labels
   static const greyText = Color(0xFF8B8B8B);
+  
+  // White color for main headlines and titles
+  static const whiteText = Colors.white;
 }
 
 class AppTheme {
   static final theme = ThemeData(
     brightness: Brightness.dark,
+
     scaffoldBackgroundColor: AppColors.darkBg,
+
     primaryColor: AppColors.primaryYellow,
-    colorScheme: const ColorScheme.dark(primary: AppColors.primaryYellow),
+    
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.inputBg,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      hintStyle: const TextStyle(color: Colors.white38),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(0),
+        borderSide: BorderSide.none,
+      ),
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryYellow,
         foregroundColor: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero, 
+        ),
         minimumSize: const Size(double.infinity, 55),
       ),
     ),
