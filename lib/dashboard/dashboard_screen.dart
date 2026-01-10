@@ -6,8 +6,11 @@ import 'task_tile.dart';
 import '../app/theme.dart';
 
 class DashboardScreen extends StatelessWidget {
+  // Use Get.find if the controller is already initialized in main/bindings
+  // or Get.put if this is the first time.
   final controller = Get.put(TaskController());
-  final taskText = TextEditingController();
+  final taskTitleController = TextEditingController();
+  final taskDescController = TextEditingController();
 
   DashboardScreen({super.key});
 
@@ -41,36 +44,39 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               "Create New Task",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 20),
             const Text("Task Title", style: TextStyle(color: AppColors.greyText)),
             const SizedBox(height: 8),
             TextField(
-              controller: taskText,
+              controller: taskTitleController,
               style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                hintText: "e.g. Design UI Wireframe",
-                hintStyle: TextStyle(color: Colors.white24),
-              ),
+              decoration: const InputDecoration(hintText: "e.g. Design UI Wireframe"),
+            ),
+            const SizedBox(height: 15),
+            const Text("Description", style: TextStyle(color: AppColors.greyText)),
+            const SizedBox(height: 8),
+            TextField(
+              controller: taskDescController,
+              style: const TextStyle(color: Colors.white),
+              maxLines: 3,
+              decoration: const InputDecoration(hintText: "Enter task details..."),
             ),
             const SizedBox(height: 25),
             ElevatedButton(
               onPressed: () {
-                if (taskText.text.isNotEmpty) {
-                  controller.addTask(taskText.text);
-                  taskText.clear();
+                if (taskTitleController.text.isNotEmpty) {
+                  controller.addTask(
+                    taskTitleController.text, 
+                    taskDescController.text
+                  );
+                  taskTitleController.clear();
+                  taskDescController.clear();
                   Get.back();
                 }
               },
-              child: const Text(
-                "Create Task",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              child: const Text("Create Task", style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -99,7 +105,6 @@ class DashboardScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          // Keeping Profile at the Top Right as requested
           GestureDetector(
             onTap: () => Get.toNamed('/profile'),
             child: const Padding(
@@ -135,33 +140,34 @@ class DashboardScreen extends StatelessWidget {
                   );
                 }
                 return ListView.builder(
-                itemCount: controller.tasks.length,
-                itemBuilder: (context, index) {
-                  final task = controller.tasks[index];
-                  return GestureDetector(
-                    onTap: () => Get.toNamed('/task-detail', arguments: task), // Pass task data
-                    child: TaskTile(
-                      title: task.title,
-                      onDelete: () => controller.deleteTask(task.id),
-                    ),
-                  );
-                },
-              );
+                  itemCount: controller.tasks.length,
+                  itemBuilder: (context, index) {
+                    final task = controller.tasks[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: GestureDetector(
+                        onTap: () => Get.toNamed('/task-detail', arguments: task),
+                        child: TaskTile(
+                          title: task.title,
+                          onDelete: () => controller.deleteTask(task.id),
+                        ),
+                      ),
+                    );
+                  },
+                );
               }),
             ),
           ],
         ),
       ),
-      
-      // Figma-style 5-item Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Required for 5 items
+        type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.inputBg,
         selectedItemColor: AppColors.primaryYellow,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        currentIndex: 0, // Set Home as active
+        currentIndex: 0,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: "Chat"),
@@ -172,6 +178,9 @@ class DashboardScreen extends StatelessWidget {
         onTap: (index) {
           if (index == 2) {
             _showAddTaskSheet(context);
+          } else if (index == 4) {
+            // Optional: Quick link to profile from notifications if you want
+            Get.toNamed('/profile');
           }
         },
       ),

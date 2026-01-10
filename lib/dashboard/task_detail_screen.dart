@@ -2,80 +2,135 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../app/theme.dart';
 import 'task_model.dart';
-import 'task_controller.dart'; // Import controller
+import 'task_controller.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({super.key});
 
-  void _showEditDialog(TaskModel task) {
-    final editController = TextEditingController(text: task.title);
-    final TaskController taskController = Get.find<TaskController>();
+  // Method to show Edit Dialog for Title and Description
+  void _showEditDialog(TaskModel task, TaskController controller) {
+    final titleEdit = TextEditingController(text: task.title);
+    final descEdit = TextEditingController(text: task.description);
 
     Get.defaultDialog(
       backgroundColor: AppColors.inputBg,
       title: "Edit Task",
       titleStyle: const TextStyle(color: Colors.white),
-      content: TextField(
-        controller: editController,
-        style: const TextStyle(color: Colors.white),
-        decoration: const InputDecoration(hintText: "Enter new title"),
+      content: Column(
+        children: [
+          TextField(
+            controller: titleEdit,
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(hintText: "Title"),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: descEdit,
+            style: const TextStyle(color: Colors.white),
+            maxLines: 3,
+            decoration: const InputDecoration(hintText: "Description"),
+          ),
+        ],
       ),
       textConfirm: "Update",
       confirmTextColor: Colors.black,
+      buttonColor: AppColors.primaryYellow,
       onConfirm: () {
-        taskController.updateTask(task.id, editController.text);
-        Get.back(); // Close dialog
-        Get.back(); // Return to Dashboard to see refreshed list
+        controller.updateTask(task.id, titleEdit.text, descEdit.text);
+        Get.back();
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final TaskModel task = Get.arguments;
+    // Get the initial task data passed from the dashboard
+    final TaskModel initialTask = Get.arguments;
+    final TaskController controller = Get.find<TaskController>();
 
     return Scaffold(
       backgroundColor: AppColors.darkBg,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
         title: const Text("Task Details"),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit, color: AppColors.primaryYellow),
-            onPressed: () => _showEditDialog(task),
+            onPressed: () => _showEditDialog(initialTask, controller),
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Task Title", style: TextStyle(color: AppColors.greyText)),
-            const SizedBox(height: 10),
-            Obx(() {
-               // We find the task in the controller to ensure UI updates if edited
-               final TaskController c = Get.find<TaskController>();
-               final currentTask = c.tasks.firstWhere((t) => t.id == task.id, orElse: () => task);
-               return Text(
-                currentTask.title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-              );
-            }),
-            const SizedBox(height: 20),
-            const Text("Status", style: TextStyle(color: AppColors.greyText)),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.primaryYellow.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(20),
+        padding: const EdgeInsets.all(25.0),
+        child: Obx(() {
+          // Find the task in the controller's observable list to keep UI in sync
+          final task = controller.tasks.firstWhere(
+            (t) => t.id == initialTask.id,
+            orElse: () => initialTask,
+          );
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Status Badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: task.isCompleted 
+                      ? Colors.green.withOpacity(0.2) 
+                      : AppColors.primaryYellow.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  task.isCompleted ? "Completed" : "Ongoing",
+                  style: TextStyle(
+                    color: task.isCompleted ? Colors.greenAccent : AppColors.primaryYellow,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              child: const Text("Ongoing", style: TextStyle(color: AppColors.primaryYellow)),
-            ),
-          ],
-        ),
+              const SizedBox(height: 20),
+              
+              const Text("Task Title", style: TextStyle(color: AppColors.greyText, fontSize: 14)),
+              const SizedBox(height: 8),
+              Text(
+                task.title,
+                style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              
+              const SizedBox(height: 30),
+              
+              const Text("Description", style: TextStyle(color: AppColors.greyText, fontSize: 14)),
+              const SizedBox(height: 8),
+              Text(
+                task.description.isEmpty ? "No description provided." : task.description,
+                style: const TextStyle(color: Colors.white70, fontSize: 16, height: 1.5),
+              ),
+              
+              const Spacer(),
+              
+              // Status Toggle Button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: task.isCompleted ? AppColors.inputBg : AppColors.primaryYellow,
+                  foregroundColor: task.isCompleted ? Colors.white : Colors.black,
+                  side: task.isCompleted ? const BorderSide(color: Colors.white24) : BorderSide.none,
+                ),
+                onPressed: () => controller.toggleTaskStatus(task.id, task.isCompleted),
+                child: Text(
+                  task.isCompleted ? "Set as Ongoing" : "Mark as Completed",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        }),
       ),
     );
   }

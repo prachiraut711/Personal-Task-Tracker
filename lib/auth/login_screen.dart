@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'auth_controller.dart';
-import '../dashboard/dashboard_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   final controller = Get.put(AuthController());
