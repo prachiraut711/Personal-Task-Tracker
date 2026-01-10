@@ -14,76 +14,6 @@ class DashboardScreen extends StatelessWidget {
 
   DashboardScreen({super.key});
 
-  // Method to show the Figma-style Bottom Sheet
-  void _showAddTaskSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-          top: 20,
-          left: 20,
-          right: 20,
-        ),
-        decoration: const BoxDecoration(
-          color: AppColors.inputBg,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Center(
-              child: SizedBox(
-                width: 50,
-                child: Divider(thickness: 4, color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "Create New Task",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            const SizedBox(height: 20),
-            const Text("Task Title", style: TextStyle(color: AppColors.greyText)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: taskTitleController,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(hintText: "e.g. Design UI Wireframe"),
-            ),
-            const SizedBox(height: 15),
-            const Text("Description", style: TextStyle(color: AppColors.greyText)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: taskDescController,
-              style: const TextStyle(color: Colors.white),
-              maxLines: 3,
-              decoration: const InputDecoration(hintText: "Enter task details..."),
-            ),
-            const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: () {
-                if (taskTitleController.text.isNotEmpty) {
-                  controller.addTask(
-                    taskTitleController.text, 
-                    taskDescController.text
-                  );
-                  taskTitleController.clear();
-                  taskDescController.clear();
-                  Get.back();
-                }
-              },
-              child: const Text("Create Task", style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +29,8 @@ class DashboardScreen extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: AppColors.primaryYellow),
             ),
             Text(
-              Supabase.instance.client.auth.currentUser?.email?.split('@')[0] ?? "User",
+              Supabase.instance.client.auth.currentUser?.email?.split('@')[0] ??
+                  "User",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
@@ -126,17 +57,28 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               "Your Tasks",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator(color: AppColors.primaryYellow));
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryYellow,
+                    ),
+                  );
                 }
                 if (controller.tasks.isEmpty) {
                   return const Center(
-                    child: Text("No tasks found", style: TextStyle(color: AppColors.greyText)),
+                    child: Text(
+                      "No tasks found",
+                      style: TextStyle(color: AppColors.greyText),
+                    ),
                   );
                 }
                 return ListView.builder(
@@ -146,7 +88,8 @@ class DashboardScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: GestureDetector(
-                        onTap: () => Get.toNamed('/task-detail', arguments: task),
+                        onTap: () =>
+                            Get.toNamed('/task-detail', arguments: task),
                         child: TaskTile(
                           title: task.title,
                           onDelete: () => controller.deleteTask(task.id),
@@ -170,16 +113,28 @@ class DashboardScreen extends StatelessWidget {
         currentIndex: 0,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: "Chat"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined), label: "Add"),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), label: "Calendar"),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications_none_outlined), label: "Notifs"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: "Chat",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_outlined),
+            label: "Add",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: "Calendar",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_none_outlined),
+            label: "Notifs",
+          ),
         ],
         onTap: (index) {
           if (index == 2) {
-            _showAddTaskSheet(context);
+            // CHANGE THIS:
+            Get.toNamed('/add-task');
           } else if (index == 4) {
-            // Optional: Quick link to profile from notifications if you want
             Get.toNamed('/profile');
           }
         },

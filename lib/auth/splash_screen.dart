@@ -17,14 +17,22 @@ class SplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Placeholder for the Figma Illustration
-                  const Icon(Icons.task_alt, size: 100, color: AppColors.primaryYellow),
+                  const Icon(
+                    Icons.task_alt,
+                    size: 100,
+                    color: AppColors.primaryYellow,
+                  ),
                   const SizedBox(height: 40),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Text(
                       "Manage your Task with DayTask",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold, height: 1.1),
+                      style: TextStyle(
+                        fontSize: 45,
+                        fontWeight: FontWeight.bold,
+                        height: 1.1,
+                      ),
                     ),
                   ),
                 ],
@@ -37,14 +45,17 @@ class SplashScreen extends StatelessWidget {
               onPressed: () {
                 // Check if a user is already logged in
                 final session = Supabase.instance.client.auth.currentSession;
-                
+
                 if (session != null) {
-                  Get.offAllNamed('/dashboard'); 
+                  Get.offAllNamed('/dashboard');
                 } else {
-                  Get.offAllNamed('/login'); 
+                  Get.offAllNamed('/login');
                 }
               },
-              child: const Text("Let's Start", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: const Text(
+                "Let's Start",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           const SizedBox(height: 30),

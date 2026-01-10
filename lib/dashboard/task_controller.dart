@@ -5,7 +5,7 @@ import 'task_model.dart';
 
 class TaskController extends GetxController {
   final supabase = Supabase.instance.client;
-  
+
   // Observable list of tasks
   var tasks = <TaskModel>[].obs;
   var isLoading = false.obs;
@@ -26,7 +26,7 @@ class TaskController extends GetxController {
     try {
       isLoading(true);
       final userId = supabase.auth.currentUser!.id;
-      
+
       final data = await supabase
           .from('tasks')
           .select()
@@ -36,8 +36,12 @@ class TaskController extends GetxController {
       // Convert dynamic list from Supabase to TaskModel list
       tasks.value = (data as List).map((e) => TaskModel.fromJson(e)).toList();
     } catch (e) {
-      Get.snackbar('Error Fetching Tasks', e.toString(),
-          backgroundColor: Colors.redAccent, colorText: Colors.white);
+      Get.snackbar(
+        'Error Fetching Tasks',
+        e.toString(),
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading(false);
     }
@@ -55,17 +59,20 @@ class TaskController extends GetxController {
       // Refresh the list from the server
       await fetchTasks();
     } catch (e) {
-      Get.snackbar('Error', 'Could not add task. Ensure "description" column exists in Supabase.');
+      Get.snackbar(
+        'Error',
+        'Could not add task. Ensure "description" column exists in Supabase.',
+      );
     }
   }
 
   // UPDATE: Change Title and Description
   Future<void> updateTask(String id, String newTitle, String newDesc) async {
     try {
-      await supabase.from('tasks').update({
-        'title': newTitle,
-        'description': newDesc,
-      }).eq('id', id);
+      await supabase
+          .from('tasks')
+          .update({'title': newTitle, 'description': newDesc})
+          .eq('id', id);
 
       // Update local state immediately for speed
       int index = tasks.indexWhere((t) => t.id == id);
@@ -104,13 +111,13 @@ class TaskController extends GetxController {
         );
         tasks.refresh();
       }
-      
+
       Get.snackbar(
-        'Status Updated', 
+        'Status Updated',
         newStatus ? 'Task marked as Completed' : 'Task moved to Ongoing',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.white12,
-        colorText: Colors.white
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.snackbar('Status Update Failed', e.toString());

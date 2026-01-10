@@ -22,7 +22,10 @@ class ProfileScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: const Text("Profile", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Profile",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -38,7 +41,11 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 15),
             Text(
               user?.email?.split('@')[0].toUpperCase() ?? "USER NAME",
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
             Text(
               user?.email ?? "email@example.com",
@@ -48,21 +55,23 @@ class ProfileScreen extends StatelessWidget {
 
             // 2. Dynamic Stats Grid (Ongoing vs Completed)
             // We use Obx here so the counts update automatically
-            Obx(() => Row(
-                  children: [
-                    _buildStatCard(
-                      taskController.ongoingCount.toString(),
-                      "Ongoing",
-                      AppColors.primaryYellow,
-                    ),
-                    const SizedBox(width: 15),
-                    _buildStatCard(
-                      taskController.completedCount.toString(),
-                      "Completed",
-                      Colors.greenAccent,
-                    ),
-                  ],
-                )),
+            Obx(
+              () => Row(
+                children: [
+                  _buildStatCard(
+                    taskController.ongoingCount.toString(),
+                    "Ongoing",
+                    AppColors.primaryYellow,
+                  ),
+                  const SizedBox(width: 15),
+                  _buildStatCard(
+                    taskController.completedCount.toString(),
+                    "Completed",
+                    Colors.greenAccent,
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 30),
 
             // 3. Settings List
@@ -80,9 +89,13 @@ class ProfileScreen extends StatelessWidget {
                 Get.offAllNamed('/login');
               },
               leading: const Icon(Icons.logout, color: Colors.redAccent),
-              title: const Text("Log Out",
-                  style: TextStyle(
-                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
+              title: const Text(
+                "Log Out",
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
@@ -101,9 +114,14 @@ class ProfileScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(count,
-                style: TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold, color: color)),
+            Text(
+              count,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
             const SizedBox(height: 5),
             Text(label, style: const TextStyle(color: AppColors.greyText)),
           ],
@@ -123,8 +141,11 @@ class ProfileScreen extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon, color: Colors.white70),
         title: Text(title, style: const TextStyle(color: Colors.white)),
-        trailing: const Icon(Icons.arrow_forward_ios,
-            size: 16, color: AppColors.greyText),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+          color: AppColors.greyText,
+        ),
         onTap: () {
           Get.snackbar("Info", "$title feature coming soon!");
         },

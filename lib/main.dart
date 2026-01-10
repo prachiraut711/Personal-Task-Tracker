@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:task_tracker/app/theme.dart';
 import 'package:task_tracker/auth/signup_screen.dart';
 import 'package:task_tracker/auth/splash_screen.dart';
+import 'package:task_tracker/dashboard/add_task_screen.dart';
 import 'package:task_tracker/dashboard/profile_screen.dart';
 import 'package:task_tracker/dashboard/task_detail_screen.dart';
 import 'auth/login_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dashboard', page: () => DashboardScreen()),
         GetPage(name: '/profile', page: () => const ProfileScreen()),
         GetPage(name: '/task-detail', page: () => const TaskDetailScreen()),
+        GetPage(name: '/add-task', page: () => AddTaskScreen()),
       ],
     );
   }
