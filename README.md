@@ -16,7 +16,7 @@
 <h2>📦 Deliverables</h2>
 <ul>
   <li><b>GitHub Repository:</b> 
-    <a href="https://github.com/YOUR_USERNAME/mini-taskhub-flutter">
+    <a href="https://github.com/prachiraut711/Personal-Task-Tracker">
       https://github.com/prachiraut711/Personal-Task-Tracker
     </a>
   </li>
