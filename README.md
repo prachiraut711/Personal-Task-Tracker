@@ -1,7 +1,7 @@
 <h1 align="center">🚀 Mini TaskHub</h1>
 
 <p align="center">
-  <strong>A sleek, high-performance Task Management App built with Flutter, GetX, and Supabase.</strong>
+  <strong>A modern Task Management App built with Flutter, GetX, and Supabase.</strong>
 </p>
 
 <div align="center">
@@ -13,18 +13,19 @@
 <hr />
 
 ## 📦 Deliverables
-<ul>
-  <li><strong>GitHub Repo:</strong> <a href="INSERT_YOUR_LINK">View Repository</a></li>
-  <li><strong>Demo Video:</strong> <a href="INSERT_YOUR_VIDEO_LINK">Watch Working Demo</a></li>
-</ul>
+* **GitHub Repo:** https://github.com/prachiraut711/Personal-Task-Tracker
+* **Demo Video:** [PASTE_YOUR_VIDEO_LINK_HERE]
 
 <hr />
 
-## 🔥 Supabase Setup (Step-by-Step)
-<ol>
-  <li><strong>Create Project:</strong> Sign up at <a href="https://supabase.com">Supabase</a> and create <code>mini_taskhub</code>.</li>
-  <li><strong>SQL Configuration:</strong> Run the following in the SQL Editor:</li>
-</ol>
+## 🔥 Supabase Setup Steps
+
+### 1️⃣ Project Creation
+* Go to [Supabase](https://supabase.com) and create a new project named **mini_taskhub**.
+* Select your nearest region (e.g., Mumbai).
+
+### 2️⃣ Database Configuration
+Open the **SQL Editor** in Supabase and run the following code to create the tasks table:
 
 ```sql
 create table tasks (
@@ -35,24 +36,43 @@ create table tasks (
   created_at timestamp with time zone default now()
 );
 
-<ol start="3"> <li><strong>Authentication:</strong> Enable Email Provider. Turn <b>OFF</b> "Confirm Email" for development.</li> <li><strong>API Keys:</strong> Copy the Project URL and Anon Key into <code>main.dart</code>.</li> </ol>
+3️⃣ Authentication Setup
+Go to Authentication > Providers.
+
+Enable Email.
+
+Turn OFF "Confirm email" (to allow immediate login for testing).
+
+4️⃣ API Keys
+Go to Settings > API.
+
+Copy your Project URL and anon public key into your main.dart initialization.
 
 <hr />
 
-🚀 Flutter Setup
-<pre>
+🚀 Flutter Installation & Setup
+Clone the project:
+
+Bash
+
+git clone [PASTE_YOUR_GITHUB_LINK_HERE]
+Install dependencies:
+
+Bash
 
 flutter pub get
+Run the app:
 
-Replace Supabase keys in main.dart
+Bash
 
-flutter run </pre>
-
+flutter run
 <hr />
 
 ⚡ Hot Reload vs Hot Restart
-<table> <tr> <th>Feature</th> <th>Hot Reload ⚡</th> <th>Hot Restart 🔄</th> </tr> <tr> <td><b>Speed</b></td> <td>Sub-second (Fast)</td> <td>2-3 Seconds</td> </tr> <tr> <td><b>State</b></td> <td><b>Preserves State</b> (Text/Scroll remains)</td> <td><b>Resets State</b> (App restarts)</td> </tr> <tr> <td><b>Use Case</b></td> <td>UI tweaks, Color changes, Build logic</td> <td>InitState changes, Global variables</td> </tr> </table>
+Flutter provides powerful tools to speed up development. Understanding the difference is key:
+
+<table width="100%"> <tr> <th width="20%">Feature</th> <th width="40%">Hot Reload ⚡</th> <th width="40%">Hot Restart 🔄</th> </tr> <tr> <td><b>Speed</b></td> <td>Extremely Fast (sub-second).</td> <td>Fast (but slower than reload).</td> </tr> <tr> <td><b>State</b></td> <td><b>Preserves State</b>. Text in fields or scroll positions stay exactly where they are.</td> <td><b>Resets State</b>. The app clears all data and restarts from the initial screen.</td> </tr> <tr> <td><b>Best For</b></td> <td>UI changes, fixing build logic, adjusting colors and padding.</td> <td>Changing <code>initState</code>, global variables, or static fields.</td> </tr> </table>
 
 <hr />
 
-<h3 align="center">Developed with ❤️ using Flutter</h3>
+<h3 align="center">Made with ❤️ for Task Management</h3>
