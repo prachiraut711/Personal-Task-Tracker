@@ -1,78 +1,175 @@
 <h1 align="center">🚀 Mini TaskHub</h1>
 
 <p align="center">
-  <strong>A modern Task Management App built with Flutter, GetX, and Supabase.</strong>
+  <b>A modern Task Management App built using Flutter, GetX, and Supabase.</b><br/>
+  Internship Assignment Project
 </p>
 
-<div align="center">
-  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" />
-  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
-  <img src="https://img.shields.io/badge/GetX-800080?style=for-the-badge&logo=dart&logoColor=white" />
-</div>
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
+  <img src="https://img.shields.io/badge/GetX-800080?style=for-the-badge&logo=dart&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white"/>
+</p>
 
-<hr />
+<hr/>
 
-## 📦 Deliverables
-* **GitHub Repo:** https://github.com/prachiraut711/Personal-Task-Tracker
-* **Demo Video:** [PASTE_YOUR_VIDEO_LINK_HERE]
+<h2>📦 Deliverables</h2>
+<ul>
+  <li><b>GitHub Repository:</b> 
+    <a href="https://github.com/YOUR_USERNAME/mini-taskhub-flutter">
+      https://github.com/prachiraut711/Personal-Task-Tracker
+    </a>
+  </li>
+  <li><b>Demo Video:</b> 
+    <a href="https://YOUR_VIDEO_LINK">Watch Demo</a>
+  </li>
+</ul>
 
-<hr />
+<hr/>
 
-## 🔥 Supabase Setup Steps
+<h2>✨ Features</h2>
+<ul>
+  <li>Email & Password Authentication (Supabase)</li>
+  <li>Create and delete personal tasks</li>
+  <li>User-specific data using Row Level Security (RLS)</li>
+  <li>Supabase PostgreSQL backend</li>
+  <li>Clean and responsive UI</li>
+  <li>State management using GetX</li>
+</ul>
 
-### 1️⃣ Project Creation
-* Go to [Supabase](https://supabase.com) and create a new project named **mini_taskhub**.
-* Select your nearest region (e.g., Mumbai).
+<hr/>
 
-### 2️⃣ Database Configuration
-Open the **SQL Editor** in Supabase and run the following code to create the tasks table:
+<h2>🛠️ Tech Stack</h2>
+<ul>
+  <li>Flutter</li>
+  <li>GetX</li>
+  <li>Supabase (Auth + Database)</li>
+  <li>PostgreSQL</li>
+</ul>
 
-```sql
+<hr/>
+
+<h2>🔥 Supabase Setup</h2>
+
+<h3>1️⃣ Project Creation</h3>
+<ul>
+  <li>Create a new project named <b>mini-taskhub</b></li>
+  <li>Select <b>Asia-Pacific</b> region</li>
+</ul>
+
+<h3>2️⃣ Database Table</h3>
+<p>Run the following query in <b>SQL Editor</b>:</p>
+
+<pre>
+<code>
 create table tasks (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id),
   title text not null,
   is_completed boolean default false,
   created_at timestamp with time zone default now()
 );
+</code>
+</pre>
 
-3️⃣ Authentication Setup
-Go to Authentication > Providers.
+<h3>3️⃣ Row Level Security (RLS)</h3>
 
-Enable Email.
+<p><b>Read Policy</b></p>
+<pre>
+<code>
+create policy "Users can read their own tasks"
+on tasks
+for select
+using (auth.uid() = user_id);
+</code>
+</pre>
 
-Turn OFF "Confirm email" (to allow immediate login for testing).
+<p><b>Insert Policy</b></p>
+<pre>
+<code>
+create policy "Users can add their own tasks"
+on tasks
+for insert
+with check (auth.uid() = user_id);
+</code>
+</pre>
 
-4️⃣ API Keys
-Go to Settings > API.
+<p><b>Delete Policy</b></p>
+<pre>
+<code>
+create policy "Users can delete their own tasks"
+on tasks
+for delete
+using (auth.uid() = user_id);
+</code>
+</pre>
 
-Copy your Project URL and anon public key into your main.dart initialization.
+<hr/>
 
-<hr />
+<h3>4️⃣ Authentication Setup</h3>
+<ul>
+  <li>Go to <b>Authentication → Sign In / Providers</b></li>
+  <li>Enable <b>Email</b></li>
+  <li>Disable <b>Confirm email</b> (for testing)</li>
+</ul>
 
-🚀 Flutter Installation & Setup
-Clone the project:
+<h3>5️⃣ API Keys</h3>
+<ul>
+  <li>Go to <b>Settings → API</b></li>
+  <li>Copy <b>Project URL</b> and <b>anon public key</b></li>
+  <li>Paste them into <code>main.dart</code></li>
+</ul>
 
-Bash
+<hr/>
 
-git clone [PASTE_YOUR_GITHUB_LINK_HERE]
-Install dependencies:
+<h2>🚀 Flutter Setup</h2>
 
-Bash
+<p><b>Clone the repository</b></p>
+<pre><code>git clone https://github.com/prachiraut711/Personal-Task-Tracker</code></pre>
 
-flutter pub get
-Run the app:
+<p><b>Install dependencies</b></p>
+<pre><code>flutter pub get</code></pre>
 
-Bash
+<p><b>Run the app</b></p>
+<pre><code>flutter run</code></pre>
 
-flutter run
-<hr />
+<hr/>
 
-⚡ Hot Reload vs Hot Restart
-Flutter provides powerful tools to speed up development. Understanding the difference is key:
+<h2>⚡ Hot Reload vs Hot Restart</h2>
 
-<table width="100%"> <tr> <th width="20%">Feature</th> <th width="40%">Hot Reload ⚡</th> <th width="40%">Hot Restart 🔄</th> </tr> <tr> <td><b>Speed</b></td> <td>Extremely Fast (sub-second).</td> <td>Fast (but slower than reload).</td> </tr> <tr> <td><b>State</b></td> <td><b>Preserves State</b>. Text in fields or scroll positions stay exactly where they are.</td> <td><b>Resets State</b>. The app clears all data and restarts from the initial screen.</td> </tr> <tr> <td><b>Best For</b></td> <td>UI changes, fixing build logic, adjusting colors and padding.</td> <td>Changing <code>initState</code>, global variables, or static fields.</td> </tr> </table>
+<table border="1" cellpadding="8" cellspacing="0" width="100%">
+  <tr>
+    <th>Feature</th>
+    <th>Hot Reload ⚡</th>
+    <th>Hot Restart 🔄</th>
+  </tr>
+  <tr>
+    <td>Speed</td>
+    <td>Very Fast</td>
+    <td>Slightly Slower</td>
+  </tr>
+  <tr>
+    <td>State</td>
+    <td>Preserved</td>
+    <td>Reset</td>
+  </tr>
+  <tr>
+    <td>Best Use</td>
+    <td>UI changes</td>
+    <td>initState changes</td>
+  </tr>
+</table>
 
-<hr />
+<hr/>
 
-<h3 align="center">Made with ❤️ for Task Management</h3>
+<h2>🏁 Conclusion</h2>
+<p>
+Mini TaskHub demonstrates secure authentication, Supabase integration,
+clean architecture, and effective state management using GetX.
+</p>
+
+<hr/>
+
+<p align="center">
+  <b>👩‍💻 Developed by Prachi Raut</b>
+</p>
