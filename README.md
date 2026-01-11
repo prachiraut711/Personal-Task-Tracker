@@ -21,7 +21,7 @@
     </a>
   </li>
   <li><b>Demo Video:</b> 
-    <a href="https://YOUR_VIDEO_LINK">Watch Demo</a>
+    <a href="https://youtu.be/PDHEOVLlLrk">Watch Demo</a>
   </li>
 </ul>
 
